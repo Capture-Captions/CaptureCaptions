@@ -9,20 +9,18 @@ const app = express()
 app.use(express.static(__dirname + '/public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.set('view engine', 'ejs')
 app.get('/', (req, res) => {
-  res.send('Welcome')
-  res.end()
+  res.render('welcome')
 })
 
 // Mongodb connection
-const url =
-  'mongodb+srv://rahuljindal1236:' +
-  process.env.MONGO_PASSWORD +
-  '@cluster0.xxfii.mongodb.net/' +
-  process.env.DB_NAME +
-  '?retryWrites=true&w=majority'
+
 mongoose
-  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log('Database Connection established')
   })
@@ -46,6 +44,8 @@ app.use(
   })
 )
 
+// Routes
+app.use('/users', require('./routes/users'))
 // connect to the server
 app.listen(3000 || process.env.PORT, () => {
   console.log('Server is up and running')
