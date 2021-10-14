@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const contributionSchema = new mongoose.Schema({
-  referenceID: Schema.Types.ObjectID,
+  referenceID: mongoose.Schema.Types.ObjectID,
+  date: { type: Date, default: Date.now() },
   img: {
     data: Buffer,
     contentType: String,
-    required: true,
   },
   captions: [String],
   selected: { type: Boolean, default: false },

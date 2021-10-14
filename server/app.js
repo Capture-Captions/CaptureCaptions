@@ -2,6 +2,7 @@
 const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
+const expressLayouts = require('express-ejs-layouts')
 require('dotenv').config({ path: './.env' })
 
 //Initializations
@@ -10,6 +11,8 @@ app.use(express.static(__dirname + '/public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.set('view engine', 'ejs')
+app.use(expressLayouts)
+
 app.get('/', (req, res) => {
   res.render('welcome')
 })
@@ -46,6 +49,7 @@ app.use(
 
 // Routes
 app.use('/users', require('./routes/users'))
+app.use('/admin', require('./routes/admin'))
 // connect to the server
 app.listen(3000 || process.env.PORT, () => {
   console.log('Server is up and running')
