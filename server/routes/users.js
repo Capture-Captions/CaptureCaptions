@@ -6,10 +6,13 @@ const {
   loginAction,
   logoutAction,
 } = require('../controllers/users')
+router.get('/dashboard', isLogin, (req, res) => {
+  res.render('dashboard')
+})
 router.get('/register', (req, res) => {
   res.render('register')
 })
-router.get('/login', isLogin, (req, res) => {
+router.get('/login', (req, res) => {
   res.render('login')
 })
 router.post('/register', registerAction)

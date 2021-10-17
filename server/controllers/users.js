@@ -38,11 +38,10 @@ exports.loginAction = (req, res) => {
         bcrypt.compare(req.body.password, data.password, (err, boolValue) => {
           if (boolValue) {
             req.session.userId = data
-            console.log(req.session)
-            res.render('dashboard')
+            res.redirect('/users/dashboard')
           }
         })
-      } else res.render('login')
+      } else res.redirect('/users/login')
     }
   })
 }

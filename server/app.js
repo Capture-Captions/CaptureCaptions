@@ -50,6 +50,7 @@ app.use(
 // Routes
 app.use('/users', require('./routes/users'))
 app.use('/admin', require('./routes/admin'))
+app.use('/search', require('./routes/search'))
 // connect to the server
 app.listen(3000 || process.env.PORT, () => {
   console.log('Server is up and running')
