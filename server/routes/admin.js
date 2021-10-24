@@ -10,7 +10,10 @@ const {
 } = require('../controllers/admin')
 
 router.get('/login', (req, res) => {
-  res.send('Admin login')
+  res.render('loginAdmin')
+})
+router.get('/dashboard', isloginAdmin, (req, res) => {
+  res.render('dashboardAdmin')
 })
 router.post('/login', loginAdmin)
 router.get('/logout', logoutAdmin)

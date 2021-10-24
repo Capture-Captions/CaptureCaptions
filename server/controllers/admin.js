@@ -1,15 +1,21 @@
 const Contribution = require('../model/contributions')
-const User = require('../model/userModel')
+const Users = require('../model/userModel')
+const bcrypt = require('bcrypt')
 
 exports.loginAdmin = (req, res) => {
-  User.findOne({ email: req.body.email }, (err, data) => {
+  console.log('Inside Login Admin Controller')
+  console.log(req.body)
+  Users.findOne({ email: req.body.email }, (err, data) => {
+    console.log('Inside mongo')
+    console.log(data)
     if (err) {
       console.log(err)
-      res.redirect('/admin/login')
+      res.status(422).redirect('/admin/login')
     } else {
       if (data) {
-        bcrypt.compare(req.body.password, data.password, (err, boolValue) => {
+        bcrypt.compare(req.body.password, data.password, (er, boolValue) => {
           if (boolValue) {
+            if (er) res.status(400).json({ msg: er })
             req.session.userId = data
             console.log('Admin Successfully In')
             res.redirect('/admin/dashboard')
@@ -31,19 +37,25 @@ exports.logoutAdmin = (req, res) => {
 }
 
 exports.contributions = (req, res) => {
-  Contribution.find({ visited: false }, (err, data) => {
-    if (err) {
-      console.log(err)
-      res.redirect('/admin/dashboard')
-    } else res.send(data)
-  })
+  Contribution.find(
+    {
+      'items.visited': false,
+      'items.selected': false,
+    },
+    (err, data) => {
+      if (err) {
+        console.log(err)
+        res.status(422).json({ msg: err })
+      } else res.status(200).json(data)
+    }
+  )
 }
 
 exports.listOfUsers = (req, res) => {
-  User.find({}, (err, data) => {
+  Users.find({}, (err, data) => {
     if (err) {
       console.log(err)
-      res.redirect('/admin/dashboard')
+      res.status(422).redirect('/admin/dashboard')
     } else res.send(data)
   })
 }
@@ -62,7 +74,7 @@ exports.contributionAction = (req, res) => {
       } else {
         console.log('updated in contributions')
         if (val == 'true') {
-          User.findOneAndUpdate(
+          Users.findOneAndUpdate(
             { _id: data.referenceID },
             { $set: { rewards: rewards + 5 } },
             { unset: true },
