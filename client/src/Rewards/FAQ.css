@@ -1,0 +1,17 @@
+.box_Accordion{
+    background-color: grey;
+    padding: 80px 150px 10px;
+    margin: 40px 100px;
+    border: 2px solid black
+}
+
+@media screen and (max-width: 768px){
+    .box_Accordion{
+        width:100%;
+        height:auto;
+        display:block;
+        margin:auto;
+        background-color: grey;
+        padding: 10px;
+    }
+    }
