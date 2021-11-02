@@ -1,0 +1,35 @@
+<%- include("partials/header"); -%>
+        <div class="login_box">
+        <div class="loginForm">
+      <h2 style= "text-align: center; color: #555;" >Signup Form</h2>
+      <div class="container1_login">
+      <div class="form_login">
+            <form action="/signup" method="post">
+
+            <div class="container_login">
+                <div>
+                    <label htmlFor="username">Fullname</label>
+                    <input type="text" autoComplete="off"
+                    value="" name="username"/>
+                </div>
+
+                <div>
+                    <label htmlFor="email">Email</label>
+                    <input type="text" autoComplete="off"
+                    value= "" name="email"/>
+                </div>
+
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <input type="text" autoComplete="off"
+                    value= "" name="password"/>
+                </div>
+
+                <button type="submit" name="button">Sign up</button>
+                </div>
+
+            </form>
+            </div></div>
+            <p style= "color: #555;" >Already a user? <a href="/login">Login</a></p>
+</div></div>
+<%- include("partials/footer"); -%>

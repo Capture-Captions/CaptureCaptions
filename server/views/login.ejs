@@ -1,0 +1,41 @@
+<%- include("partials/header"); -%>
+<div class="login_box">
+    <div class="loginForm">
+      <h2 style= "text-align: center; color: #555;" >Login Form</h2>
+      <div class="container1_login">
+      <div class="form_login">
+        <form action="/login" method="post">
+          <div class="container_login">
+            <div>
+              <label style= "color: #555" htmlFor="email">
+                Email
+              </label>
+              <input
+                type="text" placeholder="Enter your email"
+                name="email"
+                autoComplete="off"
+                value= ""
+              />
+            </div>
+
+            <div>
+              <label style= "color: #555" htmlFor="password">
+                Password
+              </label>
+              <input
+                type="password" placeholder="Enter your password"
+                name="password"
+                autoComplete="off"
+                value= ""
+              />
+            </div>
+            <br />
+            <button type="submit" name="button">Login</button>
+          </div>
+        </form>
+        </div>
+      </div>
+      <p style= "color: #555;" >New to Capture Captions? <a href="/signup">Signup</a></p>
+    </div>
+    </div>
+    <%- include("partials/footer"); -%>
