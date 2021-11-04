@@ -5,7 +5,7 @@ const Caption = require('../model/getCaptions')
 const { spawn } = require('child_process')
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/')
+    cb(null, './public/uploads/')
   },
   filename: (req, file, cb) => {
     cb(
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 })
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 10000000 },
+  limits: { fileSize: 100000000 },
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb)
   },
@@ -88,7 +88,8 @@ exports.model1Action = (req, res) => {
                 (er, success) => {
                   if (er) throw er
                   else console.log(success)
-                  res.json(cc)
+                  console.log(cc)
+                  res.render('output', { userId: req.session.userId, data: cc })
                 }
               )
             } else {
@@ -101,7 +102,8 @@ exports.model1Action = (req, res) => {
               Caption.create(newCaption, (error, resu) => {
                 if (error) throw error
                 else console.log(resu)
-                res.json(cc)
+                console.log(cc)
+                res.render('output', { userId: req.session.userId, data: cc })
               })
             }
           }

@@ -9,7 +9,8 @@ const {
   showContri,
 } = require('../controllers/users')
 router.get('/dashboard', isLogin, (req, res) => {
-  res.render('dashboard')
+  console.log(req.session.userId)
+  res.render('dashboard', { userId: req.session.userId })
 })
 router.get('/register', (req, res) => {
   res.render('register')
@@ -17,11 +18,14 @@ router.get('/register', (req, res) => {
 router.get('/login', (req, res) => {
   res.render('login')
 })
+router.get('/upload', isLogin, (req, res) => {
+  res.render('fileupload', { userId: req.session.userId })
+})
 router.post('/register', registerAction)
 router.post('/login', loginAction)
 router.get('/logout', logoutAction)
 router.get('/contribute', isLogin, (req, res) => {
-  res.render('contribute')
+  res.render('contribute', { userId: req.session.userId })
 })
 router.post('/contribute', isLogin, contributeAction)
 router.get('/myContributions', isLogin, showContri)

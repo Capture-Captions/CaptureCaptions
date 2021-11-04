@@ -1,0 +1,26 @@
+<%- include("partials/header"); -%>
+
+<div class="container row mt-5">
+  <div class="card col-md-6 m-auto" style="width: 18rem">
+    <img
+      class="card-img-top"
+      src="/uploads/<%= data.filename%>"
+      alt="Card image cap"
+    />
+    <div class="card-body">
+      <h5 class="card-title font-weight-bold">
+        Caption<i class="far fa-hand-point-down pl-2"></i>
+      </h5>
+      <p class="card-text"><%= data.output %></p>
+      <a href="/users/upload" class="btn btn-primary">Have More Fun</a>
+      <hr />
+      <small
+        >Want to Contribute? Click
+        <a href="/users/contribute"
+          >Here<i class="fas fa-hands-helping pl-2"></i></a
+      ></small>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer");-%>

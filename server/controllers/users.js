@@ -6,7 +6,7 @@ const path = require('path')
 const saltRounds = 10
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/')
+    cb(null, './public/uploads/')
   },
   filename: (req, file, cb) => {
     cb(
@@ -24,7 +24,7 @@ const upload = multer({
 }).single('img')
 function checkFileType(file, cb) {
   // Allowed ext
-  const filetypes = /jpeg|jpg|png|gif/
+  const filetypes = /jpeg|jpg|png/
   // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
   // Check mime
@@ -41,7 +41,7 @@ exports.registerAction = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
     if (err) {
       console.log(err)
-      res.render('register')
+      res.redirect('/signup')
     } else {
       if (!data) {
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -55,10 +55,10 @@ exports.registerAction = (req, res) => {
             if (err) throw err
             else console.log('user saved')
             req.session.userId = newUser
-            res.render('dashboard')
+            res.redirect('/users/dashboard')
           })
         })
-      } else res.render('register')
+      } else res.redirect('/signup')
     }
   })
 }
@@ -67,7 +67,7 @@ exports.loginAction = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
     if (err) {
       console.log(err)
-      res.render('login')
+      res.render('login', { userId: req.session.userId })
     } else {
       if (data) {
         bcrypt.compare(req.body.password, data.password, (err, boolValue) => {
@@ -76,7 +76,7 @@ exports.loginAction = (req, res) => {
             res.redirect('/users/dashboard')
           }
         })
-      } else res.redirect('/users/login')
+      } else res.redirect('/login')
     }
   })
 }

@@ -1,0 +1,89 @@
+<%- include('partials/header'); -%>
+<div class="row mt-5">
+  <div class="col-md-5 m-auto">
+    <div class="card card-body shadow">
+      <h1 class="text-center mb-3">
+        <i class="fas fa-database"></i> Contribute
+      </h1>
+      <form
+        action="/users/contribute"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <input
+            type="file"
+            id="file"
+            name="img"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c1">Caption 1</label>
+          <input
+            type="text"
+            id=""
+            name="c1"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c2">Caption 2</label>
+          <input
+            type="text"
+            id=""
+            name="c2"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c3">Caption 3</label>
+          <input
+            type="text"
+            id=""
+            name="c3"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c4">Caption 4</label>
+          <input
+            type="text"
+            id=""
+            name="c4"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c5">Caption 5</label>
+          <input
+            type="text"
+            id=""
+            name="c5"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <button type="submit" class="mb-4 btn btn-primary btn-block">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include("partials/footer"); -%>

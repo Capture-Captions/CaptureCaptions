@@ -1,0 +1,28 @@
+<%- include("partials/header");-%>
+<div class="container">
+  <h1 class="m-4"><i class="fas fa-user-circle mr-4"></i>Dashboard</h1>
+  <table class="table mt-4">
+  <thead class="thead-dark">
+    <tr>
+      <th ><i class="fas fa-circle mr-2"></i>User Details</th>
+    </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <th><i class="fas fa-signature mr-2"></i>Name</th>
+    <td><%= userId.name %></td>
+   </tr> 
+   <tr>
+      <th><i class="fas fa-envelope mr-2"></i>Email</th>
+      <td><%= userId.email %></td>
+    </tr>
+    
+    <tr>
+      <th><i class="fas fa-coins mr-2"></i>Reward Points</th>
+      <td><%= userId.rewards %></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+  <%- include("partials/footer"); -%>
+</div>
