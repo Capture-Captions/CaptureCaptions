@@ -107,49 +107,30 @@ exports.contributeAction = (req, res) => {
         console.log(req.body)
         const { c1, c2, c3, c4, c5 } = req.body
         const { fieldname, mimetype, filename, size } = req.file
-        var cc = {
+        newContri = new Contribution({
+          userId: req.session.userId._id,
           fieldname,
           mimetype,
           filename,
           size,
           captions: [c1, c2, c3, c4, c5],
-        }
-        Contribution.findOne({ _id: req.session.userId._id }, (err, data) => {
-          if (err) throw err
-          else {
-            if (data) {
-              Contribution.updateOne(
-                { _id: req.session.userId._id },
-                { $push: { items: { cc } } },
-                (er, success) => {
-                  if (er) console.log(er)
-                  else {
-                    console.log(success)
-                    res.redirect('/users/myContributions')
-                  }
-                }
-              )
-            } else {
-              const newContri = new Contribution({
-                _id: req.session.userId._id,
-                items: [cc],
-              })
-              newContri.save()
-              res.redirect('/users/myContributions')
-            }
-          }
         })
+        newContri.save()
+        res.redirect('/users/myContributions')
       }
     }
   })
 }
 
 exports.showContri = (req, res) => {
-  Contribution.findOne({ _id: req.session.userId._id }, (err, result) => {
-    if (err) console.log(err)
+  Contribution.find({ userId: req.session.userId._id }, (err, result) => {
+    console.log(result)
+    if (err) throw err
     else {
-      if (result) res.json(result)
-      else res.json({ msg: 'No Contributions' })
+      res.render('mycontri', {
+        userId: req.session.userId,
+        data: result,
+      })
     }
   })
 }

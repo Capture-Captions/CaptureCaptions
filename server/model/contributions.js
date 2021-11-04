@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
-const contriSchema = new mongoose.Schema(
+const contriSchema = new mongoose.Schema()
+const contributionSchema = new mongoose.Schema(
   {
+    userId: mongoose.Schema.Types.ObjectId,
     fieldname: {
       type: String,
       required: true,
@@ -11,14 +13,6 @@ const contriSchema = new mongoose.Schema(
     captions: [String],
     selected: { type: Boolean, default: false },
     visited: { type: Boolean, default: false },
-  },
-  {
-    timestamps: true,
-  }
-)
-const contributionSchema = new mongoose.Schema(
-  {
-    items: [contriSchema],
   },
   {
     timestamps: true,
