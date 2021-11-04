@@ -116,7 +116,7 @@ exports.contributeAction = (req, res) => {
           captions: [c1, c2, c3, c4, c5],
         })
         newContri.save()
-        res.redirect('/users/myContributions')
+        res.render('thankyou', { userId: req.session.userId })
       }
     }
   })
