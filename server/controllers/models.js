@@ -49,11 +49,11 @@ exports.model1Action = (req, res) => {
         })
       } else {
         // console.log(req.file)
-        // handle response and database query and model prediction
+        // // handle response and database query and model prediction
         // var dataToSend
         // // spawn new child process to call the python script
         // const python = spawn('python', [
-        //   'C:/Users/rahul/Desktop/Minor Project Model/ml-model/ImgCaptions.py',
+        //   '../ml-model/ImgCaptions.py',
         //   req.file.filename,
         // ])
         // // collect data from script

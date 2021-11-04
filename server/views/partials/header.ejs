@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/css/home.css">
   <link rel="stylesheet" href="/css/login.css">
 
-  <nav class="shadow-sm navbar navbar-expand-lg navbar-light bg-light">
+<nav class="shadow-sm navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Capture Captions</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,34 +20,34 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <% if(userId === undefined) { %>
           <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/">HOME</a>
+          <a class="nav-link" aria-current="page" href="/"><i class="fas fa-home"></i>HOME</a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" href="/volunteer">VOLUNTEER</a>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link" href="/about">ABOUT US</a>
+          <a class="nav-link" href="/about"><i class="fas fa-users"></i>ABOUT US</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/contact">CONTACT US</a>
+          <a class="nav-link" href="/contact"><i class="fas fa-address-card"></i>CONTACT US</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/login">LOGIN</a>
+          <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i>LOGIN</a>
         </li><%}else{%>
 <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/users/dashboard">DASHBOARD</a>
+          <a class="nav-link" aria-current="page" href="/users/dashboard"><i class="fas fa-chalkboard-teacher"></i>DASHBOARD</a>
         </li>
           <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/users/upload">TEST MODEL</a>
+          <a class="nav-link" aria-current="page" href="/users/upload"><i class="fas fa-tools"></i>TEST MODEL</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/users/contribute">CONTRIBUTE</a>
+          <a class="nav-link" href="/users/contribute"><i class="fas fa-hand-holding-usd"></i>CONTRIBUTE</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/users/myContributions">MY CONTRIBUTIONS</a>
+          <a class="nav-link" href="/users/myContributions"><i class="fas fa-database"></i>MY CONTRIBUTIONS</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/users/logout">LOGOUT</a>
+          <a class="nav-link" href="/users/logout"><i class="fas fa-sign-out-alt"></i>LOGOUT</a>
         </li>
 	<%}%>
       </ul>
@@ -56,4 +56,7 @@
 </nav>
 
   <body>
-    <div>
+
+    <div style="min-height:69.2vh; display:flex; flex-direction:column; 
+            justify-content:space-between;">
+  
