@@ -1,0 +1,56 @@
+<div class="container my-5 py-1">
+  <h1 class="text-primary">List of Users</h1>
+
+  <a href="/admin/dashboard" role="button" class="btn btn-light">Dashboard</a>
+  <a href="/admin/contributions" role="button" class="btn btn-light"
+    >User Contributions</a
+  >
+  <a href="/admin/logout" class="btn btn-dark" role="button">Logout</a>
+</div>
+
+<div class="container">
+  <% if(typeof data === undefined){ %>
+  <div class="container mt-5 shadow-lg p-3">
+    <div
+      class="card text-center align-center justify-content-center"
+      style="height: 20vh"
+    >
+      <h2>Oops! Something went wrong:(</h2>
+      <p>Please try again!</p>
+    </div>
+  </div>
+
+  <% }else{ %> <% if(data.length == 0){ %>
+  <div class="container mt-5 shadow-lg p-3">
+    <div
+      class="card text-center align-center justify-content-center"
+      style="height: 35vh"
+    >
+      <h2>Sorry! No users found!</h2>
+      <p>Make networks and advertise your product</p>
+    </div>
+  </div>
+
+  <% }else{ %> <% var i=0 %>
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Reward Points</th>
+        <th scope="col">Date Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(item=>{ %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= item.email %></td>
+        <td><%= item.rewards %></td>
+        <td><%= item.createdAt %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% } %> <% } %>
+</div>

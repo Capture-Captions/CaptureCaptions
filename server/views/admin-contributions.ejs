@@ -1,0 +1,68 @@
+<div class="container my-5">
+  <h1 class="text-primary mb-1">Contributions</h1>
+
+  <a href="/admin/dashboard" role="button" class="btn btn-light">Dashboard</a>
+  <a href="/admin/users" role="button" class="btn btn-light">List of Users</a>
+  <a href="/admin/logout" class="btn btn-dark" role="button">Logout</a>
+</div>
+
+<% if(typeof data == undefined) {%>
+<div class="container mt-5 shadow-lg p-3">
+  <div
+    class="card text-center align-center justify-content-center"
+    style="height: 20vh"
+  >
+    <h2>Oops! Something went wrong:(</h2>
+    <p>Please try again!</p>
+  </div>
+</div>
+<% }else{ %> <% if(data.length == 0) {%>
+<div class="container mt-5 shadow-lg p-3">
+  <div
+    class="card text-center align-center justify-content-center"
+    style="height: 35vh"
+  >
+    <h2>Sorry! No contributions found:(</h2>
+    <p>Make more Promotions!</p>
+  </div>
+</div>
+<% }else{ %>
+<div class="container">
+  <div class="row">
+    <% var i = 0 %> <% data.forEach(item=>{ %>
+    <div class="col col-sm-4 m-auto mb-3 shadow-lg">
+      <div class="card my-2" style="width: auto">
+        <img
+          class="card-img-top"
+          style="height: 50vh"
+          src="/uploads/<%= item.filename%>"
+          alt="Card image cap"
+        />
+        <div class="card-body">
+          <% var date = item.createdAt.getDate() %> <% var
+          month=item.createdAt.getMonth() %> <% var year =
+          item.createdAt.getFullYear() %>
+          <p>Date Created: <%= date%>/<%= month%>/<%= year%></p>
+        </div>
+        <ul class="list-group list-group-flush text-center">
+          <li class="list-group-item"><%= item.captions[0] %></li>
+          <li class="list-group-item"><%= item.captions[1] %></li>
+          <li class="list-group-item"><%= item.captions[2] %></li>
+          <li class="list-group-item"><%= item.captions[3] %></li>
+          <li class="list-group-item"><%= item.captions[4] %></li>
+        </ul>
+        <a href="/admin/decide/<%= item.id%>/1" class="btn btn-success">
+          Accept</a
+        >
+        <a href="/admin/decide/<%= item.id%>/0" class="btn btn-danger"
+          >Reject</a
+        >
+      </div>
+    </div>
+    <%i = i+1 %> <% if(i%3 ==0) {%>
+    <div class="w-100"></div>
+    <% } %> <% }) }%>
+  </div>
+</div>
+
+<% } %>

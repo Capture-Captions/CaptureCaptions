@@ -46,7 +46,7 @@ exports.contributions = (req, res) => {
       if (err) {
         console.log(err)
         res.status(422).json({ msg: err })
-      } else res.status(200).json(data)
+      } else res.render('admin-contributions', { data })
     }
   )
 }
@@ -56,38 +56,26 @@ exports.listOfUsers = (req, res) => {
     if (err) {
       console.log(err)
       res.status(422).redirect('/admin/dashboard')
-    } else res.send(data)
+    } else res.render('admin-user', { data })
   })
 }
 
-exports.contributionAction = (req, res) => {
+exports.contributionAction = async (req, res) => {
   const id = req.params.id
   const val = req.params.val
-  Contribution.findOneAndUpdate(
-    { date: id },
-    { $set: { visited: true, selected: val } },
-    { upsert: true },
-    (err, data) => {
-      if (err) {
-        console.log(err)
-        res.redirect('/admin/contributions')
-      } else {
-        console.log('updated in contributions')
-        if (val == 'true') {
-          Users.findOneAndUpdate(
-            { _id: data.referenceID },
-            { $set: { rewards: rewards + 5 } },
-            { unset: true },
-            (er, result) => {
-              if (er) throw er
-              else {
-                console.log('Updated in users')
-                res.redirect('/admin/contributions')
-              }
-            }
-          )
-        } else res.redirect('/admin/contributions')
-      }
-    }
+  console.log(id + ': ' + val)
+  let contri = Contribution.findOne({ id })
+  console.log(contri)
+  let result = Contribution.findOneAndUpdate(
+    { id },
+    { $set: { visited: true, selected: val } }
   )
+  let curUser = Users.findOne({ id: contri.userId })
+  if (val == true) {
+    let r = User.findOneAndUpdate(
+      { id: contri.userId },
+      { $set: { rewards: curUser.rewards + 5 } }
+    )
+  }
+  res.redirect('/admin/contributions')
 }
