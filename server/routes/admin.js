@@ -19,5 +19,5 @@ router.post('/login', loginAdmin)
 router.get('/logout', logoutAdmin)
 router.get('/contributions', isloginAdmin, contributions)
 router.get('/users', isloginAdmin, listOfUsers)
-router.get('/decide/:id/:val', isloginAdmin, contributionAction)
+router.post('/decide/:id/:val', isloginAdmin, contributionAction)
 module.exports = router
