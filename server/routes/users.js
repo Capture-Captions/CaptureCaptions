@@ -7,11 +7,9 @@ const {
   logoutAction,
   contributeAction,
   showContri,
+  dashboardAction,
 } = require('../controllers/users')
-router.get('/dashboard', isLogin, (req, res) => {
-  console.log(req.session.userId)
-  res.render('dashboard', { userId: req.session.userId })
-})
+router.get('/dashboard', isLogin, dashboardAction)
 router.get('/register', (req, res) => {
   res.render('register')
 })

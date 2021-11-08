@@ -1,5 +1,6 @@
 const User = require('../model/userModel')
 const Contribution = require('../model/contributions')
+const Caption = require('../model/getCaptions')
 const bcrypt = require('bcrypt')
 const multer = require('multer')
 const path = require('path')
@@ -37,6 +38,16 @@ function checkFileType(file, cb) {
   }
 }
 
+exports.dashboardAction = async (req, res) => {
+  try {
+    data = await Caption.find({ id: req.session.userId._id })
+    console.log(data[0].searches)
+    res.render('dashboard', { userId: req.session.userId, data })
+  } catch (err) {
+    res.render('dashboard', { userId: req.session.userId })
+    throw err
+  }
+}
 exports.registerAction = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
     if (err) {
