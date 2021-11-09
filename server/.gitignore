@@ -1,3 +1,4 @@
 /node_modules
 .env
 /ml-model
+/Checkpoints/train-b-64/ckpt-3.data-00000-of-00001

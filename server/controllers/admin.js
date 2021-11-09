@@ -37,19 +37,31 @@ exports.logoutAdmin = (req, res) => {
   })
 }
 
-exports.contributions = (req, res) => {
-  Contribution.find(
-    {
-      visited: false,
-    },
-    (err, data) => {
-      if (err) {
-        // console.log(err)
-        res.status(422).json({ msg: err })
-      } else res.render('admin-contributions', { data })
-    }
-  )
+exports.contributions = async (req, res) => {
+  try {
+    const data = await Contribution.find({ visited: false })
+      .sort({ createdAt: -1 })
+      .exec()
+    res.render('admin-contributions', { data })
+  } catch (err) {
+    res.status(422).json({ msg: err })
+    throw err
+  }
 }
+
+// exports.contributions = (req, res) => {
+//   Contribution.find(
+//     {
+//       visited: false,
+//     },
+//     (err, data) => {
+//       if (err) {
+//         // console.log(err)
+//         res.status(422).json({ msg: err })
+//       } else res.render('admin-contributions', { data })
+//     }
+//   )
+// }
 
 exports.listOfUsers = async (req, res) => {
   try {

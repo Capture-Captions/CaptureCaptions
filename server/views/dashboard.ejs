@@ -1,5 +1,5 @@
 <%- include("partials/header");-%>
-<div class="container">
+<div class="container mb-3">
   <h1 class="m-4"><i class="fas fa-user-circle mr-4"></i>Dashboard</h1>
   <table class="table mt-4">
   <thead class="thead-dark">
@@ -24,5 +24,42 @@
   </tbody>
 </table>
 </div>
+<% if(typeof data == undefined || data.length == 0) { %>
+  <div class="container shadow text-center py-5">
+    <h1 class="">Oops! You haven't tested our model!</h1>
+    <p>Give it a try.</p>
+    <a href="/users/upload" class="btn btn-warning">Test Now</a>
+  </div>
+  <%}else{  %>
+    <div class="container mt-5">
+      <div>
+        <h1 class="m-4"><i class="far fa-closed-captioning mr-4"></i>Your Testing</h1>
+      </div>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Image</th>
+      <th scope="col">Type</th>
+      <th scope="col">Date Testes</th>
+      <th scope="col">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% var i = 0; %> 
+    <% data[0].searches.forEach(item => { %> 
+      <% i = i+1; %> 
+      <tr class="align-self-center">
+      <th scope="row"><%= i %></th>
+      <td><img src="/uploads/<%= item.filename%>" alt="Image" style="width: 100px;height: 100px"></td>
+      <td><%= item.mimetype %></td>
+      <td><%= item.createdAt%></td>
+      <td><%= item.output %></td>
+    </tr>
+    <%}) %> 
+  </tbody>
+</table>
+</div>
+    <% } %>   
   <%- include("partials/footer"); -%>
 </div>

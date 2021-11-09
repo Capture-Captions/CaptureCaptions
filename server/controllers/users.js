@@ -41,7 +41,11 @@ function checkFileType(file, cb) {
 exports.dashboardAction = async (req, res) => {
   try {
     data = await Caption.find({ id: req.session.userId._id })
-    console.log(data[0].searches)
+      .sort({
+        createdAt: -1,
+      })
+      .exec()
+    console.log(data)
     res.render('dashboard', { userId: req.session.userId, data })
   } catch (err) {
     res.render('dashboard', { userId: req.session.userId })
@@ -133,15 +137,26 @@ exports.contributeAction = (req, res) => {
   })
 }
 
-exports.showContri = (req, res) => {
-  Contribution.find({ userId: req.session.userId._id }, (err, result) => {
-    console.log(result)
-    if (err) throw err
-    else {
-      res.render('mycontri', {
-        userId: req.session.userId,
-        data: result,
-      })
-    }
-  })
+exports.showContri = async (req, res) => {
+  // Contribution.find({ userId: req.session.userId._id }, (err, result) => {
+  //   console.log(result)
+  //   if (err) throw err
+  //   else {
+  //     res.render('mycontri', {
+  //       userId: req.session.userId,
+  //       data: result,
+  //     })
+  //   }
+  // })
+  try {
+    const result = await Contribution.find({ userId: req.session.userId._id })
+      .sort({ createdAt: -1 })
+      .exec()
+    res.render('mycontri', {
+      userId: req.session.userId,
+      data: result,
+    })
+  } catch (err) {
+    throw err
+  }
 }

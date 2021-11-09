@@ -36,7 +36,7 @@ features_shape = 2048
 attention_features_shape = 64
 
 
-with open('../Vocabulary/Dictionary.pkl', 'rb') as f:
+with open('C:/Users/rahul/Desktop/CaptureCaptions/server/Vocabulary/Dictionary.pkl', 'rb') as f:
     annotations = pickle.load(f)
 tokenizer = keras.preprocessing.text.Tokenizer(
     num_words=top_k, oov_token="<unk>", filters='!"#$%&()*+.-/:;=?@[\]^_`{|}~ ')
@@ -57,7 +57,7 @@ class CNN_Encoder(keras.Model):
     def __init__(self, embedding_dim):
         super(CNN_Encoder, self).__init__()
         self.fc = layers.Dense(embedding_dim)
-        #self.dropout = layers.Dropout(0.5)
+        # self.dropout = layers.Dropout(0.5)
 
     def call(self, x):
         x = self.fc(x)
@@ -138,7 +138,7 @@ decoder = Decoder(embedding_dim, units, vocab_size)
 optimizer = tf.keras.optimizers.Adam()
 
 
-checkpoint_path = "../Checkpoints/train-b-64/ckpt-3"
+checkpoint_path = "C:/Users/rahul/Desktop/CaptureCaptions/server/Checkpoints/train-b-64/ckpt-3"
 ckpt = tf.train.Checkpoint(encoder=encoder,
                            decoder=decoder,
                            optimizer=optimizer)

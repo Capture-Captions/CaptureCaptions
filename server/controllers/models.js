@@ -53,7 +53,7 @@ exports.model1Action = (req, res) => {
         var dataToSend
         // spawn new child process to call the python script
         const python = spawn('python', [
-          'C:/Users/rahul/Desktop/CaptureCaptions/server/ml-model/ImgCaptions.py',
+          'C:/Users/rahul/Desktop/CaptureCaptions/server/Trained-Models/predict.py',
           req.file.filename,
         ])
         // collect data from script
@@ -76,7 +76,7 @@ exports.model1Action = (req, res) => {
                 console.log(data)
                 Caption.updateOne(
                   { _id: req.session.userId._id },
-                  { $push: { searches: { cc } } },
+                  { $push: { searches: cc } },
                   (er, success) => {
                     if (er) throw er
                     else console.log(success)
