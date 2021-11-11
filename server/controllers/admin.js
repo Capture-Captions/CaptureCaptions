@@ -7,7 +7,7 @@ exports.loginAdmin = (req, res) => {
   // console.log('Inside Login Admin Controller')
   // console.log(req.body)
   Users.findOne({ email: req.body.email }, (err, data) => {
-    // console.log('Inside mongo')
+    
     // console.log(data)
     if (err) {
       // console.log(err)
