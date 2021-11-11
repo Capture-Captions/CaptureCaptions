@@ -1,18 +1,63 @@
 <%- include("partials/header"); -%>
 
 <div class="container row mt-5">
-  <div class="card col-md-6 m-auto" style="width: 18rem">
+  <div class="card col col-md-10 m-auto">
     <img
       class="card-img-top"
       src="/uploads/<%= data.filename%>"
       alt="Card image cap"
+      style="height: 70vh; width: 70vw; margin: auto"
     />
     <div class="card-body">
-      <h5 class="card-title font-weight-bold">
+      <!-- Select Menu for Voice -->
+      <select id="voices" class="form-select bg-secondary text-light"></select>
+
+      <!-- Range Slliders for Volume, Rate & Pitch -->
+      <div class="d-flex mt-4">
+        <div>
+          <p class="">Volume</p>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.1"
+            id="volume"
+          />
+          <span id="volume-label" class="ms-2">1</span>
+        </div>
+        <div class="mx-5">
+          <p class="">Rate</p>
+          <input
+            type="range"
+            min="0.1"
+            max="10"
+            value="1"
+            id="rate"
+            step="0.1"
+          />
+          <span id="rate-label" class="ms-2">1</span>
+        </div>
+        <div>
+          <p class="">Pitch</p>
+          <input type="range" min="0" max="2" value="1" step="0.1" id="pitch" />
+          <span id="pitch-label" class="ms-2">1</span>
+        </div>
+      </div>
+
+      <!-- Output of the models is displayed here -->
+      <h5 class="card-title font-weight-bold mt-5">
         Caption<i class="far fa-hand-point-down pl-2"></i>
       </h5>
-      <p class="card-text"><%= data.output %></p>
-      <a href="/users/upload" class="btn btn-primary">Have More Fun</a>
+      <p id="output" class="border p-5 border-dark"><%= data.output%></p>
+
+      <!-- Control Buttons -->
+      <div class="mb-5 btn-group" role="group">
+        <button id="start" class="btn btn-success mt-5 me-3">Start</button>
+        <button id="pause" class="btn btn-warning mt-5 me-3">Pause</button>
+      </div>
+      <br />
+      <a href="/users/upload" class="btn btn-primary">Test Again</a>
       <hr />
       <small
         >Want to Contribute? Click
