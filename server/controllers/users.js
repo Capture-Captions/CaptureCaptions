@@ -85,7 +85,7 @@ exports.registerAction = (req, res) => {
               },
             })
             let mailOptions = {
-              from: process.env.SENDER_USER,
+              from: `"CaptureCaptions 🖼" <${process.env.SENDER_USER}>`,
               to: req.body.email,
               subject: 'New Account Created',
               html: `<h1>Thanks for joining Capture Captions!</h1>

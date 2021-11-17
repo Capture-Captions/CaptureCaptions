@@ -2,12 +2,12 @@ const Contribution = require('../model/contributions')
 const Users = require('../model/userModel')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
+const nodemailer = require('nodemailer')
 
 exports.loginAdmin = (req, res) => {
   // console.log('Inside Login Admin Controller')
   // console.log(req.body)
   Users.findOne({ email: req.body.email }, (err, data) => {
-    
     // console.log(data)
     if (err) {
       // console.log(err)
@@ -84,24 +84,82 @@ exports.listOfUsers = async (req, res) => {
 exports.contributionAction = async (req, res) => {
   const item_id = mongoose.Types.ObjectId(req.params.id)
   const val = req.params.val == 1 ? true : false
-  console.log(item_id + val)
+  // console.log(item_id + val)
   try {
     const item = await Contribution.findOne({
       _id: item_id,
     }).exec()
     // console.log(item)
     const user_id = mongoose.Types.ObjectId(item.userId)
+    // console.log(user_id)
     const result = await Contribution.findByIdAndUpdate(
       { _id: item_id },
       { $set: { visited: true, selected: val } }
     ).exec()
-    const curUser = await Users.findById({ _id: user_id })
+    const curUser = await Users.findOne({ _id: user_id })
     const updUser = await Users.findByIdAndUpdate(
       { _id: user_id },
       { $set: { rewards: curUser.rewards + 5 } }
     )
+    // console.log(curUser)
+    // console.log(updUser)
+    let transporter = nodemailer.createTransport({
+      // host: 'localhost',
+      server: 'smtp.gmail.com',
+      // port:465,
+      service: 'gmail',
+      port: 587,
+      auth: {
+        user: process.env.SENDER_USER,
+        pass: process.env.SENDER_PASSWORD,
+      },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false,
+      },
+    })
+    let mailOptions = {
+      from: `"CaptureCaptions 🖼" <${process.env.SENDER_USER}>`,
+      to: curUser.email,
+      subject: 'Contribution Accepted',
+      html: `<h1>Thanks for contributing to Capture Captions!</h1>
+                <p>Your contribution is accepted. Cheers!🎊✨</p>
+                <p><b>Following are the details of your contribution:</b></p>
+                <p>Contributor Username : ${curUser.name}</p>
+                <p>Contributor Email : ${curUser.email}</p>
+                <p>Updated Reward Points : ${updUser.rewards}</p>
+                <h3>Following are the details of what you have contributed:</h3>
+                <img src="" alt="Image should be here" />
+                <h5><i>5 Captions:</i></h5>
+                <p>1. ${item.captions[0]}</p>
+                <p>2. ${item.captions[1]}</p>
+                <p>3. ${item.captions[2]}</p>
+                <p>4. ${item.captions[3]}</p>
+                <p>5. ${item.captions[4]}</p>
+                <hr/>
+                <p>Keep Contributing and redeem awards! We are delighted to have you as our user!</p>
+                <a href="http://localhost:3000/users/contribute" target="_blank">Contribute here</a>
+                <h2>Some Ready reference Links</h2>
+                <a href="http://localhost:3000/search/upload" target="_blank">Test Model</a><br/>
+                <a href="http://localhost:3000/login" target="_blank">Login</a><br/>
+  
+                Regards,
+                Capture Captions
+              `,
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        // console.log(error)
+        return res.redirect('/admin/contributions')
+      }
+      // console.log('Message sent: %s', info.messageId)
+      // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
+      return res.redirect('/admin/contributions')
+    })
   } catch (err) {
+    console.log('Error occured and thrws')
     throw err
   }
+
   res.redirect('/admin/contributions')
 }
