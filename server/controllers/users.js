@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const multer = require('multer')
 const path = require('path')
 const saltRounds = 10
+const nodemailer = require('nodemailer')
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public/uploads/')
@@ -68,9 +69,46 @@ exports.registerAction = (req, res) => {
           })
           newUser.save((err) => {
             if (err) throw err
-            else console.log('user saved')
-            req.session.userId = newUser
-            res.redirect('/users/dashboard')
+            let transporter = nodemailer.createTransport({
+              // host: 'localhost',
+              server: 'smtp.gmail.com',
+              // port:465,
+              service: 'gmail',
+              port: 587,
+              auth: {
+                user: process.env.SENDER_USER,
+                pass: process.env.SENDER_PASSWORD,
+              },
+              tls: {
+                // do not fail on invalid certs
+                rejectUnauthorized: false,
+              },
+            })
+            let mailOptions = {
+              from: process.env.SENDER_USER,
+              to: req.body.email,
+              subject: 'New Account Created',
+              html: `<h1>Thanks for joining Capture Captions!</h1>
+                <p>Your new account is created with following credentials</p>
+                <p>Email: ${req.body.email}</p>
+                <p>Password: ${req.body.password}</p>
+                <p>Login to our website, test our model and enjoy more features.</p>
+                <h2>Some Ready reference Links</h2>
+                <a href="http://localhost:3000/search/upload" target="_blank">Test Model</a><br/>
+                <h2><em>Contribute to our Dataset to generate more accurate captions</em></h2>
+                <a href="http://localhost:3000/users/contribute" target="_blank">Contribute here</a>
+              `,
+            }
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                console.log(error)
+                return res.redirect('/signup')
+              }
+              // console.log('Message sent: %s', info.messageId)
+              // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
+              req.session.userId = newUser
+              return res.redirect('/users/dashboard')
+            })
           })
         })
       } else res.redirect('/signup')
