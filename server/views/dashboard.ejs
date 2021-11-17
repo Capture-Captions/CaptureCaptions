@@ -24,7 +24,7 @@
   </tbody>
 </table>
 </div>
-<% if(typeof data == undefined || data.length == 0) { %>
+<% if(typeof data == undefined || data == null || data.length == 0) { %>
   <div class="container shadow text-center py-5">
     <h1 class="">Oops! You haven't tested our model!</h1>
     <p>Give it a try.</p>
@@ -47,7 +47,7 @@
   </thead>
   <tbody>
     <% var i = 0; %> 
-    <% data[0].searches.forEach(item => { %> 
+    <% data.searches.forEach(item => { %> 
       <% i = i+1; %> 
       <tr class="align-self-center">
       <th scope="row"><%= i %></th>

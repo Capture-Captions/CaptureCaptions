@@ -58,8 +58,8 @@ exports.model1Action = (req, res) => {
         ])
         // collect data from script
         python.stdout.on('data', function (data) {
-          console.log('Pipe data from python script ...')
-          console.log(`Received chunk ${data}`)
+          // console.log('Pipe data from python script ...')
+          // console.log(`Received chunk ${data}`)
           dataToSend = data.toString()
           const { fieldname, mimetype, filename, size } = req.file
           var cc = {
@@ -73,16 +73,16 @@ exports.model1Action = (req, res) => {
             if (err) throw err
             else {
               if (data) {
-                console.log(data)
+                // console.log(data)
                 Caption.updateOne(
-                  { _id: req.session.userId._id },
+                  { id: req.session.userId._id },
                   { $push: { searches: cc } },
                   (er, success) => {
                     if (er) throw er
                     else console.log(success)
-                    console.log(cc)
-                    res.render('output', {
-                      userId: req.session.userId,
+                    // console.log(cc)
+                    return res.render('output', {
+                      userId: req.session.userId._id,
                       data: cc,
                     })
                   }
@@ -96,8 +96,8 @@ exports.model1Action = (req, res) => {
                 // newCaption.save()
                 Caption.create(newCaption, (error, resu) => {
                   if (error) throw error
-                  else console.log(resu)
-                  console.log(cc)
+                  // else console.log(resu)
+                  // console.log(newCaption)
                   res.render('output', { userId: req.session.userId, data: cc })
                 })
               }
@@ -109,7 +109,7 @@ exports.model1Action = (req, res) => {
         })
         // in close event we are sure that stream from child process is closed
         python.on('close', (code) => {
-          console.log(`child process close all stdio with code ${code}`)
+          // console.log(`child process close all stdio with code ${code}`)
           // send data to browser
         })
       }

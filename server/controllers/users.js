@@ -40,7 +40,7 @@ function checkFileType(file, cb) {
 
 exports.dashboardAction = async (req, res) => {
   try {
-    data = await Caption.find({ id: req.session.userId._id })
+    data = await Caption.findOne({ _id: req.session.userId._id })
       .sort({
         createdAt: -1,
       })
@@ -82,16 +82,17 @@ exports.loginAction = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
     if (err) {
       console.log(err)
-      res.render('login', { userId: req.session.userId })
+      return res.render('login', { userId: req.session.userId })
     } else {
       if (data) {
         bcrypt.compare(req.body.password, data.password, (err, boolValue) => {
           if (boolValue) {
             req.session.userId = data
-            res.redirect('/users/dashboard')
+            // console.log(req.session.userId)
+            return res.redirect('/users/dashboard')
           }
         })
-      } else res.redirect('/login')
+      } else return res.redirect('/login')
     }
   })
 }
