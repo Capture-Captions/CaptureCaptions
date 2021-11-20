@@ -6,6 +6,8 @@ const multer = require('multer')
 const path = require('path')
 const saltRounds = 10
 const nodemailer = require('nodemailer')
+const cloudinary = require('../config/cloudinary')
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public/uploads/')
@@ -158,19 +160,35 @@ exports.contributeAction = (req, res) => {
           msg: 'Error: No File Selected!',
         })
       } else {
-        console.log(req.body)
+        console.log(req.file)
         const { c1, c2, c3, c4, c5 } = req.body
         const { fieldname, mimetype, filename, size } = req.file
-        newContri = new Contribution({
-          userId: req.session.userId._id,
-          fieldname,
-          mimetype,
-          filename,
-          size,
-          captions: [c1, c2, c3, c4, c5],
-        })
-        newContri.save()
-        res.render('thankyou', { userId: req.session.userId })
+        var imgUpload
+        cloudinary.uploader.upload(
+          req.file.path,
+          { folder: 'contributions' },
+          (result, err) => {
+            imgUpload = result
+            // console.log('inside')
+            // if (err) console.log(err)
+
+            // console.log('outside')
+            // console.log(imgUpload)
+            newContri = new Contribution({
+              userId: req.session.userId._id,
+              fieldname,
+              mimetype,
+              filename,
+              size,
+              captions: [c1, c2, c3, c4, c5],
+              cloudinary_url: err.secure_url,
+              public_id: err.public_id,
+            })
+            console.log(newContri)
+            newContri.save()
+            res.render('thankyou', { userId: req.session.userId })
+          }
+        )
       }
     }
   })

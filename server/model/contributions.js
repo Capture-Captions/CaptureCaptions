@@ -9,6 +9,8 @@ const contributionSchema = new mongoose.Schema(
     },
     mimetype: { type: String },
     filename: { type: String },
+    cloudinary_url: { type: String, required: true },
+    public_id: { type: String, required: true },
     size: Number,
     captions: [String],
     selected: { type: Boolean, default: false },
