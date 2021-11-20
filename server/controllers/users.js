@@ -59,7 +59,7 @@ exports.registerAction = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
     if (err) {
       console.log(err)
-      res.redirect('/signup')
+      return res.redirect('/signup')
     } else {
       if (!data) {
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -130,7 +130,7 @@ exports.loginAction = (req, res) => {
             req.session.userId = data
             // console.log(req.session.userId)
             return res.redirect('/users/dashboard')
-          }
+          } else return res.redirect('/login')
         })
       } else return res.redirect('/login')
     }
@@ -216,4 +216,30 @@ exports.showContri = async (req, res) => {
   } catch (err) {
     throw err
   }
+}
+
+exports.updateDetails = (req, res) => {
+  // console.log(req.body)
+  var name =
+    req.session.userId.name != req.body.name
+      ? req.body.name
+      : req.session.userId.name
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    User.findOneAndUpdate(
+      { _id: req.session.userId._id },
+      { name: name, password: hash },
+      { new: true },
+      (err, data) => {
+        if (err) {
+          console.log(err)
+          return res.redirect('/users/dashboard')
+        } else {
+          // console.log('after delte')
+          // console.log(data)
+          req.session.userId = data
+          return res.redirect('/users/dashboard')
+        }
+      }
+    )
+  })
 }
