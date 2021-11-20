@@ -51,7 +51,7 @@
       <% i = i+1; %> 
       <tr class="align-self-center">
       <th scope="row"><%= i %></th>
-      <td><img src="/uploads/<%= item.filename%>" alt="Image" style="width: 100px;height: 100px"></td>
+      <td><img src="<%= item.cloudinary_url%>" alt="Image" style="width: 100px;height: 100px"></td>
       <td><%= item.mimetype %></td>
       <td><%= item.createdAt%></td>
       <td><%= item.output %></td>

@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const path = require('path')
 const Caption = require('../model/getCaptions')
 const { spawn } = require('child_process')
+const cloudinary = require('../config/cloudinary')
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public/uploads/')
@@ -61,48 +62,61 @@ exports.model1Action = (req, res) => {
           // console.log('Pipe data from python script ...')
           // console.log(`Received chunk ${data}`)
           dataToSend = data.toString()
-          const { fieldname, mimetype, filename, size } = req.file
-          var cc = {
-            fieldname,
-            mimetype,
-            filename,
-            size,
-            output: dataToSend,
-          }
-          Caption.findOne({ _id: req.session.userId._id }, (err, data) => {
-            if (err) throw err
-            else {
-              if (data) {
-                // console.log(data)
-                Caption.updateOne(
-                  { id: req.session.userId._id },
-                  { $push: { searches: cc } },
-                  (er, success) => {
-                    if (er) throw er
-                    else console.log(success)
-                    // console.log(cc)
-                    return res.render('output', {
-                      userId: req.session.userId._id,
-                      data: cc,
+
+          cloudinary.uploader.upload(
+            req.file.path,
+            { folder: 'testing' },
+            (result, err) => {
+              const { fieldname, mimetype, filename, size } = req.file
+              var cc = {
+                fieldname,
+                mimetype,
+                filename,
+                size,
+                cloudinary_url: err.secure_url,
+                public_id: err.public_id,
+                output: dataToSend,
+              }
+              console.log(cc)
+              Caption.findOne({ _id: req.session.userId._id }, (err, data) => {
+                if (err) throw err
+                else {
+                  if (data) {
+                    // console.log(data)
+                    Caption.updateOne(
+                      { id: req.session.userId._id },
+                      { $push: { searches: cc } },
+                      (er, success) => {
+                        if (er) throw er
+                        else console.log(success)
+                        // console.log(cc)
+                        return res.render('output', {
+                          userId: req.session.userId._id,
+                          data: cc,
+                        })
+                      }
+                    )
+                  } else {
+                    const newCaption = {
+                      _id: req.session.userId._id,
+                      searches: [cc],
+                    }
+                    // console.log('newCaption: ' + newCaption)
+                    // newCaption.save()
+                    Caption.create(newCaption, (error, resu) => {
+                      if (error) throw error
+                      // else console.log(resu)
+                      // console.log(newCaption)
+                      res.render('output', {
+                        userId: req.session.userId,
+                        data: cc,
+                      })
                     })
                   }
-                )
-              } else {
-                const newCaption = {
-                  _id: req.session.userId._id,
-                  searches: [cc],
                 }
-                // console.log('newCaption: ' + newCaption)
-                // newCaption.save()
-                Caption.create(newCaption, (error, resu) => {
-                  if (error) throw error
-                  // else console.log(resu)
-                  // console.log(newCaption)
-                  res.render('output', { userId: req.session.userId, data: cc })
-                })
-              }
+              })
             }
-          })
+          )
         })
         python.stderr.on('data', function (data) {
           console.log(data.toString())
