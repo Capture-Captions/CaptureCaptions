@@ -6,6 +6,8 @@ const multer = require('multer')
 const path = require('path')
 const saltRounds = 10
 const nodemailer = require('nodemailer')
+const cloudinary = require('../config/cloudinary')
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public/uploads/')
@@ -57,7 +59,7 @@ exports.registerAction = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
     if (err) {
       console.log(err)
-      res.redirect('/signup')
+      return res.redirect('/signup')
     } else {
       if (!data) {
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -128,7 +130,7 @@ exports.loginAction = (req, res) => {
             req.session.userId = data
             // console.log(req.session.userId)
             return res.redirect('/users/dashboard')
-          }
+          } else return res.redirect('/login')
         })
       } else return res.redirect('/login')
     }
@@ -158,19 +160,35 @@ exports.contributeAction = (req, res) => {
           msg: 'Error: No File Selected!',
         })
       } else {
-        console.log(req.body)
+        console.log(req.file)
         const { c1, c2, c3, c4, c5 } = req.body
         const { fieldname, mimetype, filename, size } = req.file
-        newContri = new Contribution({
-          userId: req.session.userId._id,
-          fieldname,
-          mimetype,
-          filename,
-          size,
-          captions: [c1, c2, c3, c4, c5],
-        })
-        newContri.save()
-        res.render('thankyou', { userId: req.session.userId })
+        var imgUpload
+        cloudinary.uploader.upload(
+          req.file.path,
+          { folder: 'contributions' },
+          (result, err) => {
+            imgUpload = result
+            // console.log('inside')
+            // if (err) console.log(err)
+
+            // console.log('outside')
+            // console.log(imgUpload)
+            newContri = new Contribution({
+              userId: req.session.userId._id,
+              fieldname,
+              mimetype,
+              filename,
+              size,
+              captions: [c1, c2, c3, c4, c5],
+              cloudinary_url: err.secure_url,
+              public_id: err.public_id,
+            })
+            console.log(newContri)
+            newContri.save()
+            res.render('thankyou', { userId: req.session.userId })
+          }
+        )
       }
     }
   })
@@ -198,4 +216,30 @@ exports.showContri = async (req, res) => {
   } catch (err) {
     throw err
   }
+}
+
+exports.updateDetails = (req, res) => {
+  // console.log(req.body)
+  var name =
+    req.session.userId.name != req.body.name
+      ? req.body.name
+      : req.session.userId.name
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    User.findOneAndUpdate(
+      { _id: req.session.userId._id },
+      { name: name, password: hash },
+      { new: true },
+      (err, data) => {
+        if (err) {
+          console.log(err)
+          return res.redirect('/users/dashboard')
+        } else {
+          // console.log('after delte')
+          // console.log(data)
+          req.session.userId = data
+          return res.redirect('/users/dashboard')
+        }
+      }
+    )
+  })
 }

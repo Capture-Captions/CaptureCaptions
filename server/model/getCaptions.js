@@ -15,6 +15,8 @@ const searchSchema = new mongoose.Schema(
       required: true,
     },
     size: Number,
+    cloudinary_url: { type: String, required: true },
+    public_id: { type: String, required: true },
     output: {
       type: 'string',
       default: '',

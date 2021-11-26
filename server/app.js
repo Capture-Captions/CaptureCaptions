@@ -4,7 +4,7 @@ const session = require('express-session')
 const mongoose = require('mongoose')
 const expressLayouts = require('express-ejs-layouts')
 require('dotenv').config({ path: './.env' })
-
+require('./schedulers')
 //Initializations
 const app = express()
 app.use(express.static('./public'))
