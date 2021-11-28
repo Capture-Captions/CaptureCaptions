@@ -52,27 +52,25 @@ exports.showDailyTask = async (req, res) => {
     if (data == null) {
       show = true
     } else {
-      const date1 = data.updatedAt
-      const date2 = new Date()
+      const date1 = data.updatedAt.getDate()
+      const date2 = new Date().getDate()
       const diffTime = Math.abs(date2 - date1)
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
       if (diffDays > 0) show = true
-      else show = false
     }
-    show = true
     if (show) {
       console.log('assign new task')
       todayTask = await taskSchema.find({}).sort({ createdAt: -1 })[0]
       console.log(todayTask)
-      res.render('dailyTask', {
+      return res.render('dailyTask', {
         userId: req.session.userId,
         done: false,
-        url: 'http://localhost:3000/dashboard',
+        url: process.env.IMAGE_URL,
       })
     } else {
       console.log('task completed for the day! visit tomorrow')
 
-      res.render('dailyTask', {
+      return res.render('dailyTask', {
         userId: req.session.userId,
         done: true,
       })
@@ -82,8 +80,44 @@ exports.showDailyTask = async (req, res) => {
   }
 }
 exports.handleTaskSubmit = async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   // handle Task Submission
+  try {
+    submission = {
+      imageUrl: req.body.imageUrl,
+      captions: [
+        req.body.c1,
+        req.body.c2,
+        req.body.c3,
+        req.body.c4,
+        req.body.c5,
+      ],
+    }
+    data = await taskSubmission.findOne({ _id: req.session.userId._id })
+    if (data == null) {
+      newDoc = {
+        _id: req.session.userId._id,
+        posts: [submission],
+      }
+      taskSubmission.create(newDoc, (err, success) => {
+        if (err) throw err
+        else console.log(success)
+      })
+    } else {
+      taskSubmission.updateOne(
+        { id: req.session.userId._id },
+        { $push: { posts: submission } },
+        (err, sucess) => {
+          if (err) throw err
+          else console.log(sucess)
+        }
+      )
+    }
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+  return res.redirect('/users/dashboard')
 }
 
 exports.dashboardAction = async (req, res) => {
