@@ -1,6 +1,8 @@
 const User = require('../model/userModel')
 const Contribution = require('../model/contributions')
 const Caption = require('../model/getCaptions')
+const taskSubmission = require('../model/dailyTaskSubmissions')
+const taskSchema = require('../model/dailyTask')
 const bcrypt = require('bcrypt')
 const multer = require('multer')
 const path = require('path')
@@ -38,6 +40,44 @@ function checkFileType(file, cb) {
     return cb(null, true)
   } else {
     cb('Error: Images Only!')
+  }
+}
+
+exports.showDailyTask = async (req, res) => {
+  try {
+    data = await taskSubmission.findOne({ _id: req.session.userId._id })
+    console.log(data)
+    show = false
+
+    if (data == null) {
+      show = true
+    } else {
+      const date1 = data.updatedAt
+      const date2 = new Date()
+      const diffTime = Math.abs(date2 - date1)
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      if (diffDays > 0) show = true
+      else show = false
+    }
+    if (show) {
+      console.log('assign new task')
+      todayTask = await taskSchema.find({}).sort({ createdAt: -1 })[0]
+      console.log(todayTask)
+      res.render('dailyTask', {
+        userId: req.session.userId,
+        done: false,
+        url: 'http://localhost:3000/dashboard',
+      })
+    } else {
+      console.log('task completed for the day! visit tomorrow')
+
+      res.render('dailyTask', {
+        userId: req.session.userId,
+        done: true,
+      })
+    }
+  } catch (err) {
+    console.log(err)
   }
 }
 

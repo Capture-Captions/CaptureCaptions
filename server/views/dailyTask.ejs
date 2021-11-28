@@ -1,0 +1,18 @@
+<%- include("partials/header");-%> <% if(done == true){ %>
+<div class="container mt-5 shadow-lg p-3">
+  <div
+    class="card text-center align-center justify-content-center"
+    style="height: 35vh"
+  >
+    <h1>😎Daily Task Completed🎉</h1>
+    <p class="lead">It's pleasure to hear from you! Visit Tomorrow :)</p>
+    <p class="lead text-muted mt-1">
+      <a href="/users/contribute">Contribute More</a>
+    </p>
+  </div>
+</div>
+<%} else{%>
+<div>
+  <img src="<%= url%>" alt="" />
+</div>
+<%}%> <%- include("partials/footer");-%>

@@ -19,4 +19,4 @@ const taskSubmitSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
-module.exports = mongoose.model('TaskSubmission', taskSchema)
+module.exports = mongoose.model('TaskSubmission', taskSubmitSchema)
