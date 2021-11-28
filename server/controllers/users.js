@@ -59,6 +59,7 @@ exports.showDailyTask = async (req, res) => {
       if (diffDays > 0) show = true
       else show = false
     }
+    show = true
     if (show) {
       console.log('assign new task')
       todayTask = await taskSchema.find({}).sort({ createdAt: -1 })[0]
@@ -79,6 +80,10 @@ exports.showDailyTask = async (req, res) => {
   } catch (err) {
     console.log(err)
   }
+}
+exports.handleTaskSubmit = async (req, res) => {
+  console.log(req.body)
+  // handle Task Submission
 }
 
 exports.dashboardAction = async (req, res) => {

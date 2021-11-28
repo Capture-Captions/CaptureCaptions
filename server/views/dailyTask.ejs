@@ -4,7 +4,7 @@
     class="card text-center align-center justify-content-center"
     style="height: 35vh"
   >
-    <h1>😎Daily Task Completed🎉</h1>
+    <h1 class="display-1">😎Daily Task Completed🎉</h1>
     <p class="lead">It's pleasure to hear from you! Visit Tomorrow :)</p>
     <p class="lead text-muted mt-1">
       <a href="/users/contribute">Contribute More</a>
@@ -12,7 +12,91 @@
   </div>
 </div>
 <%} else{%>
-<div>
-  <img src="<%= url%>" alt="" />
+<div class="container mt-5">
+  <div class="card py-2 shadow" style="width: 50%; margin: auto">
+    <img
+      src="<%= url%>"
+      class="card-img-top"
+      alt="Oops! Something went wrong"
+    />
+    <div class="card-body">
+      <h5 class="card-title"><strong>Daily Task</strong></h5>
+      <small class="samll-text"
+        >Write 5 captions relevant to above picture. Describe the
+        picture.</small
+      >
+      <p>
+        Read Instructions <a href="/users/contribute" target="_blank">here</a>
+      </p>
+      <form action="/users/dailyTask" method="POST">
+        <div class="form-group" style="display: none">
+          <input type="text" name="imageUrl" value="<%= url%>" id="" />
+        </div>
+        <div class="form-group">
+          <label for="c1">Caption 1</label>
+          <input
+            type="text"
+            id=""
+            name="c1"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c2">Caption 2</label>
+          <input
+            type="text"
+            id=""
+            name="c2"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c3">Caption 3</label>
+          <input
+            type="text"
+            id=""
+            name="c3"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c4">Caption 4</label>
+          <input
+            type="text"
+            id=""
+            name="c4"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="c5">Caption 5</label>
+          <input
+            type="text"
+            id=""
+            name="c5"
+            class="form-control"
+            value=""
+            placeholder="Enter Caption 1"
+            required
+          />
+        </div>
+        <button type="submit" class="mb-4 btn btn-primary btn-block">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
 <%}%> <%- include("partials/footer");-%>

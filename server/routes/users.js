@@ -10,6 +10,7 @@ const {
   dashboardAction,
   updateDetails,
   showDailyTask,
+  handleTaskSubmit,
 } = require('../controllers/users')
 router.get('/dashboard', isLogin, dashboardAction)
 router.get('/register', (req, res) => {
@@ -31,4 +32,5 @@ router.post('/contribute', isLogin, contributeAction)
 router.get('/myContributions', isLogin, showContri)
 router.post('/update/details', isLogin, updateDetails)
 router.get('/dailytask', isLogin, showDailyTask)
+router.post('/dailytask', isLogin, handleTaskSubmit)
 module.exports = router
