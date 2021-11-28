@@ -3,6 +3,7 @@ const Users = require('../model/userModel')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const nodemailer = require('nodemailer')
+const fs = require('fs')
 
 exports.loginAdmin = (req, res) => {
   // console.log('Inside Login Admin Controller')
@@ -90,6 +91,42 @@ exports.contributionAction = async (req, res) => {
       _id: item_id,
     }).exec()
     // console.log(item)
+    if (val) {
+      id = item.public_id
+      caption = item.captions
+      data =
+        id +
+        ', ' +
+        caption[0] +
+        '\n' +
+        id +
+        ', ' +
+        caption[1] +
+        '\n' +
+        id +
+        ', ' +
+        caption[2] +
+        '\n' +
+        id +
+        ', ' +
+        caption[3] +
+        '\n' +
+        id +
+        ', ' +
+        caption[4] +
+        '\n'
+      fs.appendFile(
+        'C:/Users/rahul/Desktop/CaptureCaptions/server/public/files/contribution.txt',
+        data,
+        'utf8',
+        // callback function
+        function (err) {
+          if (err) throw err
+          // if no error
+          // console.log('Data is appended to file successfully.')
+        }
+      )
+    }
     const user_id = mongoose.Types.ObjectId(item.userId)
     // console.log(user_id)
     const result = await Contribution.findByIdAndUpdate(

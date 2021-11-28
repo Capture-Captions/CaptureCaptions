@@ -21,7 +21,6 @@ const job1 = schedule.scheduleJob('0 0 * * *', function () {
           rejectUnauthorized: false,
         },
       })
-      let val = ''
       let mailOptions = {
         from: `"CaptureCaptions 🖼" <${process.env.SENDER_USER}>`,
         to: '',
@@ -29,13 +28,13 @@ const job1 = schedule.scheduleJob('0 0 * * *', function () {
       }
       results.forEach((user) => {
         mailOptions.to = user.email
-        mailOptions.html =  ` <h1>New Day New Task!</h1> 
+        mailOptions.html = ` <h1>New Day New Task!</h1> 
             <p>Hey ${user.name}!</p>
             <p><i>New task has been created ✔. We are looking forward for your response</i></p>
             <p>Complete the daily task, win the reward points.</p>
             <a href="http://localhost:3000/users/dashboard">Dashboard</a><br>
             <a href="http://localhost:3000/users/task/unsubscribe/${user._id}">Unsubscribe here</a>
-     ` = 
+     `
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             console.log(error)
