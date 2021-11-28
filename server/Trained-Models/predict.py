@@ -47,7 +47,7 @@ def main(IMG_PATH):
     test_image = IMG_PATH.rstrip()
     # print("#"*100)
     # print predicted caption
-    result, _, pred_test = evaluate(test_image)
+    result, _, _ = evaluate(test_image)
     pred_caption = ' '.join(result).rsplit(' ', 1)[0]
     # print('Predicted Caption:', pred_caption)
     sys.stdout.write(pred_caption)
@@ -55,4 +55,5 @@ def main(IMG_PATH):
 
 
 if __name__ == "__main__":
-    main('C:/Users/rahul/Desktop/CaptureCaptions/server/public/uploads/'+str(sys.argv[1]))
+    main('C:/Users/rahul/Desktop/CaptureCaptions/server/public/uploads/' +
+         str(sys.argv[1]))

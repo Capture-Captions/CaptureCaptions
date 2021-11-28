@@ -27,16 +27,16 @@ base_model = keras.Model(new_input, hidden_layer)
 
 
 # Set the parameters
-top_k = 10000
+top_k = 22901
 embedding_dim = 256
 units = 512
 vocab_size = top_k + 1
-max_length = 74
+max_length = 49
 features_shape = 2048
 attention_features_shape = 64
 
 
-with open('C:/Users/rahul/Desktop/CaptureCaptions/server/Vocabulary/Dictionary.pkl', 'rb') as f:
+with open('C:/Users/rahul/Desktop/CaptureCaptions/server/Vocabulary/DictionaryMSCOCO.pkl', 'rb') as f:
     annotations = pickle.load(f)
 tokenizer = keras.preprocessing.text.Tokenizer(
     num_words=top_k, oov_token="<unk>", filters='!"#$%&()*+.-/:;=?@[\]^_`{|}~ ')
