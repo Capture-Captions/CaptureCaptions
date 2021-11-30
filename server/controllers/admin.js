@@ -8,10 +8,23 @@ const fs = require('fs')
 exports.loginAdmin = (req, res) => {
   // console.log('Inside Login Admin Controller')
   // console.log(req.body)
+  if (process.env.ADMIN_MAIL !== req.body.email) {
+    req.session.message = {
+      type: 'danger',
+      intro: 'Email does not exists! ',
+      message: 'Only Admin is allowed to login 1',
+    }
+    return res.redirect('/admin/login')
+  }
   Users.findOne({ email: req.body.email }, (err, data) => {
     // console.log(data)
     if (err) {
       // console.log(err)
+      req.session.message = {
+        type: 'danger',
+        intro: 'Error! ',
+        message: err.message,
+      }
       res.status(422).redirect('/admin/login')
     } else {
       if (data) {
@@ -20,10 +33,29 @@ exports.loginAdmin = (req, res) => {
             if (er) res.status(400).json({ msg: er })
             req.session.userId = data
             // console.log('Admin Successfully In')
+            req.session.message = {
+              type: 'success',
+              intro: 'Successfully logged in! ',
+              message: '',
+            }
             res.redirect('/admin/dashboard')
+          } else {
+            req.session.message = {
+              type: 'danger',
+              intro: 'Password does not match! ',
+              message: 'Please enter the correct password.',
+            }
+            return res.redirect('/admin/login')
           }
         })
-      } else res.render('/admin/login')
+      } else {
+        req.session.message = {
+          type: 'danger',
+          intro: 'Err! ',
+          message: '',
+        }
+        return res.redirect('/admin/login')
+      }
     }
   })
 }
@@ -45,7 +77,12 @@ exports.contributions = async (req, res) => {
       .exec()
     res.render('admin-contributions', { data })
   } catch (err) {
-    res.status(422).json({ msg: err })
+    req.session.message = {
+      type: 'danger',
+      intro: 'Error! ',
+      message: err.message,
+    }
+    res.status(422).redirect('/admin/dashboard')
     throw err
   }
 }
@@ -191,12 +228,21 @@ exports.contributionAction = async (req, res) => {
       }
       // console.log('Message sent: %s', info.messageId)
       // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
+      req.session.message = {
+        type: 'info',
+        intro: 'Contribution Accepted! ',
+        message: 'Saved and but error sending email to the user.',
+      }
       return res.redirect('/admin/contributions')
     })
   } catch (err) {
     console.log('Error occured and thrws')
     throw err
   }
-
+  req.session.message = {
+    type: 'success',
+    intro: 'Contribution Accepted! ',
+    message: 'Saved and Email sent to user.',
+  }
   res.redirect('/admin/contributions')
 }
