@@ -138,7 +138,7 @@ decoder = Decoder(embedding_dim, units, vocab_size)
 optimizer = tf.keras.optimizers.Adam()
 
 
-checkpoint_path = "C:/Users/rahul/Desktop/CaptureCaptions/server/Checkpoints/train-b-64/ckpt-3"
+checkpoint_path = "C:/Users/rahul/Desktop/CaptureCaptions/server/Checkpoints/train-b-64/ckpt-50"
 ckpt = tf.train.Checkpoint(encoder=encoder,
                            decoder=decoder,
                            optimizer=optimizer)
