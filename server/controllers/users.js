@@ -145,6 +145,11 @@ exports.registerAction = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
     if (err) {
       console.log(err)
+      req.session.message = {
+        type: 'danger',
+        intro: 'Error! ',
+        message: 'Please try again later.',
+      }
       return res.redirect('/signup')
     } else {
       if (!data) {
@@ -195,11 +200,23 @@ exports.registerAction = (req, res) => {
               // console.log('Message sent: %s', info.messageId)
               // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
               req.session.userId = newUser
+              req.session.message = {
+                type: 'success',
+                intro: 'Successfully registered! ',
+                message: 'You account is created successfully.',
+              }
               return res.redirect('/users/dashboard')
             })
           })
         })
-      } else res.redirect('/signup')
+      } else {
+        req.session.message = {
+          type: 'danger',
+          intro: 'Email already exists! ',
+          message: 'Please enter new or valid email address.',
+        }
+        res.redirect('/signup')
+      }
     }
   })
 }
@@ -215,10 +232,29 @@ exports.loginAction = (req, res) => {
           if (boolValue) {
             req.session.userId = data
             // console.log(req.session.userId)
+            req.session.message = {
+              type: 'success',
+              intro: 'Successfully Logged in! ',
+              message: 'You are logged in now.',
+            }
             return res.redirect('/users/dashboard')
-          } else return res.redirect('/login')
+          } else {
+            req.session.message = {
+              type: 'danger',
+              intro: 'Incorrect Password! ',
+              message: 'Please ensure you enter the correct password.',
+            }
+            return res.redirect('/login')
+          }
         })
-      } else return res.redirect('/login')
+      } else {
+        req.session.message = {
+          type: 'danger',
+          intro: 'Email does not exist! ',
+          message: 'Please ensure you have entered the correct email address.',
+        }
+        return res.redirect('/login')
+      }
     }
   })
 }
@@ -229,7 +265,7 @@ exports.logoutAction = (req, res) => {
       console.log(err)
     }
     res.clearCookie(process.env.SESSION_NAME)
-    res.redirect('/')
+    return res.redirect('/login')
   })
 }
 
