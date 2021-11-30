@@ -76,7 +76,12 @@ exports.showDailyTask = async (req, res) => {
       })
     }
   } catch (err) {
-    console.log(err)
+    req.session.message = {
+      type: 'danger',
+      intro: 'Error! ',
+      message: err.message,
+    }
+    return res.redirect('/users/dailytask')
   }
 }
 exports.handleTaskSubmit = async (req, res) => {
@@ -114,8 +119,11 @@ exports.handleTaskSubmit = async (req, res) => {
       )
     }
   } catch (err) {
-    console.log(err)
-    throw err
+    req.session.message = {
+      type: 'danger',
+      intro: 'Error on Submission! ',
+      message: err.message,
+    }
   }
   return res.redirect('/users/dashboard')
 }
@@ -292,7 +300,14 @@ exports.contributeAction = (req, res) => {
           (result, err) => {
             imgUpload = result
             // console.log('inside')
-            // if (err) console.log(err)
+            if (err) {
+              req.session.message = {
+                type: 'danger',
+                intro: 'Error uploading file! ',
+                message: err.message,
+              }
+              return res.redirect('/users/contributions')
+            }
 
             // console.log('outside')
             // console.log(imgUpload)
@@ -354,11 +369,21 @@ exports.updateDetails = (req, res) => {
       (err, data) => {
         if (err) {
           console.log(err)
+          req.session.message = {
+            type: 'danger',
+            intro: 'Error occured! ',
+            message: err.message,
+          }
           return res.redirect('/users/dashboard')
         } else {
           // console.log('after delte')
           // console.log(data)
           req.session.userId = data
+          req.session.message = {
+            type: 'success',
+            intro: 'Successsfully updated! ',
+            message: 'Your details have been updated successfully.',
+          }
           return res.redirect('/users/dashboard')
         }
       }

@@ -90,6 +90,12 @@ exports.model1Action = (req, res) => {
                         if (er) throw er
                         else console.log(success)
                         // console.log(cc)
+                        req.session.message = {
+                          type: 'sucess',
+                          intro: 'Prediction Successful! ',
+                          message: 'Model has successfully given an output.',
+                        }
+
                         return res.render('output', {
                           userId: req.session.userId._id,
                           data: cc,
@@ -107,6 +113,11 @@ exports.model1Action = (req, res) => {
                       if (error) throw error
                       // else console.log(resu)
                       // console.log(newCaption)
+                      req.session.message = {
+                        type: 'sucess',
+                        intro: 'Prediction Successful! ',
+                        message: 'Model has successfully given an output.',
+                      }
                       res.render('output', {
                         userId: req.session.userId,
                         data: cc,
