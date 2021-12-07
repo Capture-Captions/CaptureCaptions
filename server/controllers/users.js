@@ -60,12 +60,13 @@ exports.showDailyTask = async (req, res) => {
     }
     if (show) {
       console.log('assign new task')
-      todayTask = await taskSchema.find({}).sort({ createdAt: -1 })[0]
-      console.log(todayTask)
+      todayTask = await taskSchema.find({}).sort({ createdAt: -1 }).exec()
+      console.log('print')
+      console.log(todayTask[0])
       return res.render('dailyTask', {
         userId: req.session.userId,
         done: false,
-        url: process.env.IMAGE_URL,
+        url: todayTask[0].imageUrl,
       })
     } else {
       console.log('task completed for the day! visit tomorrow')
@@ -124,6 +125,12 @@ exports.handleTaskSubmit = async (req, res) => {
       intro: 'Error on Submission! ',
       message: err.message,
     }
+    return res.redirect('/users/dashboard')
+  }
+  req.session.message = {
+    type: 'success',
+    intro: 'Submitted! ',
+    message: 'Daily Task has been submitted successfully!',
   }
   return res.redirect('/users/dashboard')
 }
