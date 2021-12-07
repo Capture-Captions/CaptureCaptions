@@ -26,7 +26,8 @@ git clone https://github.com/Capture-Captions/CaptureCaptions.git
 ### Install dependencies
 
 ```
-cd server npm install
+cd server 
+npm install
 ```
 
 ### Setting up env
