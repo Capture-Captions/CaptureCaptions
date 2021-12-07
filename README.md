@@ -11,8 +11,8 @@ according to the content observed in an image.
 
 Capture Captions takes any form of images and then gives an appropriate caption cooresponding to it. Primarily, our model is based on general activities captioning using MSCOCO Dataset. But, we have added a speacial feature of anomaly detection. It detects anomaly like car accident, fire accident, fights, injured people, terrorists, women being raped, people dead and bleeding or domestic violence. 2 points that make our project different from others:
 
-- Only one research paper is published on anomaly detection. This is the first practical model to caption anomalies for the categories mentioned above.
-- We have prepare are own Anomaly Detection (AD) dataset. We captioned to 2500 images and trained our model on own GPU.
+- Only one research paper is published on anomaly detection. This is the first practical model to caption anomalies for the above categories mentioned.
+- We have prepared are own Anomaly Detection(AD) dataset. We captioned to 2500 images and trained model on our own GPU.
 <hr>
 
 ## Installation
