@@ -36,7 +36,7 @@ features_shape = 2048
 attention_features_shape = 64
 
 
-with open('C:/Users/rahul/Desktop/CaptureCaptions/server/Vocabulary/DictionaryMSCOCO.pkl', 'rb') as f:
+with open('C:/Users/rahul/Desktop/CaptureCaptions/server/Vocabulary/DictionaryMSCOCO_Aug.pkl', 'rb') as f:
     annotations = pickle.load(f)
 tokenizer = keras.preprocessing.text.Tokenizer(
     num_words=top_k, oov_token="<unk>", filters='!"#$%&()*+.-/:;=?@[\]^_`{|}~ ')
@@ -138,7 +138,7 @@ decoder = Decoder(embedding_dim, units, vocab_size)
 optimizer = tf.keras.optimizers.Adam()
 
 
-checkpoint_path = "C:/Users/rahul/Desktop/CaptureCaptions/server/Checkpoints/train-b-64/ckpt-50"
+checkpoint_path = "C:/Users/rahul/Desktop/CaptureCaptions/server/Checkpoints/train-b-64/ckpt-20"
 ckpt = tf.train.Checkpoint(encoder=encoder,
                            decoder=decoder,
                            optimizer=optimizer)

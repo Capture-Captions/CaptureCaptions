@@ -24,7 +24,7 @@ const upload = multer({
 }).single('image')
 function checkFileType(file, cb) {
   // Allowed ext
-  const filetypes = /jpeg|jpg|png|gif/
+  const filetypes = /jpeg|jpg|png|gif|jfif/
   // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
   // Check mime
@@ -77,6 +77,7 @@ exports.model1Action = (req, res) => {
                 public_id: err.public_id,
                 output: dataToSend,
               }
+              console.log('Block to be inserted into searches array')
               console.log(cc)
               Caption.findOne({ _id: req.session.userId._id }, (err, data) => {
                 if (err) throw err
@@ -84,7 +85,7 @@ exports.model1Action = (req, res) => {
                   if (data) {
                     // console.log(data)
                     Caption.updateOne(
-                      { id: req.session.userId._id },
+                      { _id: req.session.userId._id },
                       { $push: { searches: cc } },
                       (er, success) => {
                         if (er) throw er

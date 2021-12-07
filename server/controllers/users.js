@@ -136,13 +136,13 @@ exports.dashboardAction = async (req, res) => {
       })
       .exec()
     console.log(data)
-    const num = Math.floor(Math.random() * 3)
-    cloudinary.search
-      .expression('folder:contributions/*')
-      .sort_by('public_id', 'desc')
-      .max_results(30)
-      .execute()
-      .then((result) => console.log(result.resources[num]))
+    // const num = Math.floor(Math.random() * 3)
+    // cloudinary.search
+    //   .expression('folder:contributions/*')
+    //   .sort_by('public_id', 'desc')
+    //   .max_results(30)
+    //   .execute()
+    //   .then((result) => console.log(result.resources[num]))
     res.render('dashboard', { userId: req.session.userId, data })
   } catch (err) {
     res.render('dashboard', { userId: req.session.userId })

@@ -1,6 +1,8 @@
 const schedule = require('node-schedule')
 const nodemailer = require('nodemailer')
 const User = require('./model/userModel')
+const cloudinary = require('./config/cloudinary')
+const dailyTask = require('./model/dailyTask')
 const job1 = schedule.scheduleJob('0 0 * * *', function () {
   User.find()
     .select('email name')
@@ -49,5 +51,22 @@ const job1 = schedule.scheduleJob('0 0 * * *', function () {
     })
     .catch((err) => {
       console.log(err)
+    })
+})
+
+const job2 = schedule.scheduleJob('0 0 * * *', () => {
+  const num = Math.floor(Math.random() * 150)
+  console.log(num)
+  cloudinary.search
+    .expression('folder:tasks/*')
+    .sort_by('public_id', 'desc')
+    .max_results(150)
+    .execute()
+    .then((result) => {
+      console.log(result.resources[num])
+      task = new dailyTask({
+        imageUrl: result.resources[num].secure_url,
+      })
+      task.save()
     })
 })
